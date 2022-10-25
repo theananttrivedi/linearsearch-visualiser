@@ -18,36 +18,28 @@ const bars_intital = [
 
 function BarContainer() {
   // shuffleArray(bars)
-  const [bars, setBars] = useState(shuffleArray(bars_intital));
-  const [visualised, setVisualised] = useState(false);
-  const [index, setIndex] = useState(null);
-  const valueToBeSearched = 10;
+  const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_intital)));
+
   function handleReset() {
-    setBars(shuffleArray(bars_intital));
-    setVisualised(false);
-    setIndex(null);
+    setBars(JSON.parse(JSON.stringify(bars_intital)));
+  }
+  function printBars() {
+    console.log(bars_intital);
+  }
+  async function handlePlay() {
+    await visualizeLinearSearch();
   }
   async function visualizeLinearSearch() {
-    console.log("Playing: In Func Linear Search Visualise");
-    // 1. Set the first to currentlyLooking = true
-    // 2. then compare
-    // 3. If true then break the loop and set correct = true
-    //    Else go to the next one and repeat 2.
-    // If the current index is equal to the length
-    // Display: The value is not in the list
     let i = 0;
     let foundcorrect = false;
     while (i < bars.length) {
-      // 1. Set the current bar to looking = true
-      if (i < bars.length) {
-        setBars((prevBars) => {
-          const newBars = [...prevBars];
-          const barToBeLookedAt = prevBars[i];
-          barToBeLookedAt.currentlyLooking = true;
-          newBars[i] = barToBeLookedAt;
-          return newBars;
-        });
-      }
+      setBars((prevBars) => {
+        const newBars = [...prevBars];
+        const barToBeLookedAt = prevBars[i];
+        barToBeLookedAt.currentlyLooking = true;
+        newBars[i] = barToBeLookedAt;
+        return newBars;
+      });
 
       // 2. Check the condition if true then make it correct visually
       //   if (bars[i].num === valueToBeSearched) {
@@ -68,26 +60,23 @@ function BarContainer() {
       //     break;
       //   }
       await new Promise((resolve) => setTimeout(resolve, 500));
-      // 3. Set the previous bar to looking = false
-      setBars((prevBars) => {
-        const newBars = [...prevBars];
-        if (i != 0) {
-          const barBefore = prevBars[i - 1];
-          barBefore.currentlyLooking = false;
-          newBars[i - 1] = barBefore;
-        }
-        return newBars;
-      });
+      // Set the previous bar to looking = false
+      //   setBars((prevBars) => {
+      //     const newBars = [...prevBars];
+      //     const barToBeLookedAt = prevBars[i];
+      //     console.log(barToBeLookedAt);
+      //     barToBeLookedAt.currentlyLooking = false;
+      //     newBars[i] = barToBeLookedAt;
+      //     return newBars;
+      //   });
 
       i++;
     }
   }
 
-  useEffect(() => {
-    // if (!visualised) {
-    visualizeLinearSearch();
-    // }
-  }, [visualised]);
+  //   useEffect(() => {
+  //     visualizeLinearSearch();
+  //   }, []);
 
   return (
     <div className="flex flex-col gap-y-8">
@@ -110,12 +99,24 @@ function BarContainer() {
           );
         })}
       </div>
+      <div
+        className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
+        onClick={printBars}
+      >
+        Print
+      </div>
+      <div
+        className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
+        onClick={handlePlay}
+      >
+        Play
+      </div>
 
-      <ResultContainer
+      {/* <ResultContainer
         value={valueToBeSearched}
         index={index}
         notCorrect={!visualised}
-      />
+      /> */}
     </div>
   );
 }
