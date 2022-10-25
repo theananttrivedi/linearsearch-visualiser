@@ -17,66 +17,81 @@ const bars_intital = [
 ];
 
 function BarContainer() {
-  // shuffleArray(bars)
   const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_intital)));
-
+  const [playAnimation, setPlayAnimation] = useState(false);
   function handleReset() {
+    setPlayAnimation(false);
     setBars(JSON.parse(JSON.stringify(bars_intital)));
   }
-  function printBars() {
-    console.log(bars_intital);
-  }
+
   async function handlePlay() {
-    await visualizeLinearSearch();
+    setPlayAnimation(true);
   }
-  async function visualizeLinearSearch() {
-    let i = 0;
-    let foundcorrect = false;
-    while (i < bars.length) {
+
+  function handlePrint() {
+    console.log({ playAnimation });
+  }
+
+  useEffect(() => {
+    async function visualizeLinearSearch() {
+      let i = 0;
+      let foundcorrect = false;
+      while (i < bars.length && playAnimation) {
+        console.log(playAnimation);
+
+        setBars((prevBars) => {
+          let previousBarTobeStoppedLookingAt;
+          const newBars = JSON.parse(JSON.stringify(prevBars));
+          const barToBeLookedAt = newBars[i];
+
+          //   Switching off the previous bar
+          //   logic doesn't work in case of the last one
+          //   the last one is switched off seperately
+          if (i !== 0) {
+            previousBarTobeStoppedLookingAt = newBars[i - 1];
+            previousBarTobeStoppedLookingAt.currentlyLooking = false;
+            newBars[i - 1] = previousBarTobeStoppedLookingAt;
+          }
+
+          barToBeLookedAt.currentlyLooking = true;
+          newBars[i] = barToBeLookedAt;
+          return newBars;
+        });
+
+        //   2. Check the condition if true then make it correct visually
+        //   if (bars[i].num === valueToBeSearched) {
+        //     setBars((prevBars) => {
+        //       const newBars = JSON.parse(JSON.stringify(prevBars));
+        //       const barToBeMarkedCorrect = prevBars[i];
+        //       barToBeMarkedCorrect.currentlyLooking = false;
+        //       barToBeMarkedCorrect.correct = true;
+        //       newBars[i] = barToBeMarkedCorrect;
+        //       foundcorrect = true;
+        //       return newBars;
+        //     });
+        //   }
+
+        //   if (foundcorrect) {
+        //     setVisualised(true);
+        //     setIndex(i);
+        //     break;
+        //   }
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        i++;
+      }
       setBars((prevBars) => {
-        const newBars = [...prevBars];
-        const barToBeLookedAt = prevBars[i];
-        barToBeLookedAt.currentlyLooking = true;
-        newBars[i] = barToBeLookedAt;
+        const newBars = JSON.parse(JSON.stringify(prevBars));
+        const lastBarToBeSwitchedOff = newBars[newBars.length - 1];
+        lastBarToBeSwitchedOff.currentlyLooking = false;
+        newBars[newBars.length - 1] = lastBarToBeSwitchedOff;
         return newBars;
       });
-
-      // 2. Check the condition if true then make it correct visually
-      //   if (bars[i].num === valueToBeSearched) {
-      //     setBars((prevBars) => {
-      //       const newBars = [...prevBars];
-      //       const barToBeMarkedCorrect = prevBars[i];
-      //       barToBeMarkedCorrect.currentlyLooking = false;
-      //       barToBeMarkedCorrect.correct = true;
-      //       newBars[i] = barToBeMarkedCorrect;
-      //       foundcorrect = true;
-      //       return newBars;
-      //     });
-      //   }
-
-      //   if (foundcorrect) {
-      //     setVisualised(true);
-      //     setIndex(i);
-      //     break;
-      //   }
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      // Set the previous bar to looking = false
-      //   setBars((prevBars) => {
-      //     const newBars = [...prevBars];
-      //     const barToBeLookedAt = prevBars[i];
-      //     console.log(barToBeLookedAt);
-      //     barToBeLookedAt.currentlyLooking = false;
-      //     newBars[i] = barToBeLookedAt;
-      //     return newBars;
-      //   });
-
-      i++;
+      // setPlayAnimation(false);
+      console.log(playAnimation);
     }
-  }
-
-  //   useEffect(() => {
-  //     visualizeLinearSearch();
-  //   }, []);
+    if (playAnimation) visualizeLinearSearch();
+  }, [playAnimation]);
 
   return (
     <div className="flex flex-col gap-y-8">
@@ -101,9 +116,9 @@ function BarContainer() {
       </div>
       <div
         className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
-        onClick={printBars}
+        onClick={handlePrint}
       >
-        Print
+        Print "playAnimation" value
       </div>
       <div
         className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
