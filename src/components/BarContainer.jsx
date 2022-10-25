@@ -31,59 +31,20 @@ function BarContainer() {
   function handlePrint() {
     console.log({ playAnimation });
   }
-  async function visualizeLinearSearch() {
-    let i = 0;
-    let foundcorrect = false;
-    while (i < bars.length && playAnimation) {
-      console.log(playAnimation);
-
-      //   2. Check the condition if true then make it correct visually
-      //   if (bars[i].num === valueToBeSearched) {
-      //     setBars((prevBars) => {
-      //       const newBars = JSON.parse(JSON.stringify(prevBars));
-      //       const barToBeMarkedCorrect = prevBars[i];
-      //       barToBeMarkedCorrect.currentlyLooking = false;
-      //       barToBeMarkedCorrect.correct = true;
-      //       newBars[i] = barToBeMarkedCorrect;
-      //       foundcorrect = true;
-      //       return newBars;
-      //     });
-      //   }
-
-      //   if (foundcorrect) {
-      //     setVisualised(true);
-      //     setIndex(i);
-      //     break;
-      //   }
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      i++;
-    }
-    setBars((prevBars) => {
-      const newBars = JSON.parse(JSON.stringify(prevBars));
-      const lastBarToBeSwitchedOff = newBars[newBars.length - 1];
-      lastBarToBeSwitchedOff.currentlyLooking = false;
-      newBars[newBars.length - 1] = lastBarToBeSwitchedOff;
-      return newBars;
-    });
-    // setPlayAnimation(false);
-    console.log(playAnimation);
-  }
-  //   useEffect(() => {
-  //     if (playAnimation) visualizeLinearSearch();
-  //   }, [playAnimation]);
 
   useEffect(() => {
+    setBars(JSON.parse(JSON.stringify(bars_intital)));
     let i = -1;
+    let founded = false;
     if (!playAnimation) return;
     if (i >= bars.length) return;
 
     const intervalID = setInterval(() => {
+      if (founded) return;
       if (i - bars.length !== -1) {
         setBars((prevBars) => {
           let previousBarTobeStoppedLookingAt;
           const newBars = JSON.parse(JSON.stringify(prevBars));
-          const barToBeLookedAt = newBars[i];
 
           //   Switching off the previous bar
           // logic doesn't work in case of the last one
@@ -93,14 +54,21 @@ function BarContainer() {
             previousBarTobeStoppedLookingAt.currentlyLooking = false;
             newBars[i - 1] = previousBarTobeStoppedLookingAt;
           }
-
+          const barToBeLookedAt = newBars[i];
           barToBeLookedAt.currentlyLooking = true;
+          if (barToBeLookedAt.num === 5) {
+            barToBeLookedAt.currentlyLooking = false;
+            barToBeLookedAt.correct = true;
+            founded = true;
+          }
+
           newBars[i] = barToBeLookedAt;
 
           return newBars;
         });
       }
 
+      // Switching off the last one
       if (i - bars.length === -1) {
         setBars((prevBars) => {
           const newBars = JSON.parse(JSON.stringify(prevBars));
@@ -112,7 +80,7 @@ function BarContainer() {
         setPlayAnimation(false);
       }
       i++;
-    }, 500); // in milliseconds
+    }, 500);
     return () => {
       clearInterval(intervalID);
     };
