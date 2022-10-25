@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import BarContainer from "./components/BarContainer";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-     <h1 className="">
-      Hello world!
-    </h1>
-  )
+    <>
+      <div className="flex flex-col items-center mt-8 overflow-x-hidden">
+        <BarContainer />
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;
