@@ -92,13 +92,10 @@ function BarContainer() {
 
   return (
     <div className="flex flex-col gap-y-8">
-      {" "}
-      <div
-        className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer"
-        onClick={handleReset}
-      >
-        Reset
-      </div>
+      <h1 className="px-4 text-black font-bold text-4xl text-center">
+        Linear Search{" "}
+      </h1>
+
       <h1 className="px-4 text-gray-500 font-bold text-xl">
         The value to be searched is :{" "}
         <span className="text-black">{valueToBeSearched}</span>
@@ -116,7 +113,7 @@ function BarContainer() {
           );
         })}
       </div>
-      <div className="h-8">
+      <div className="h-20">
         {playAnimation && (
           <ResultContainer
             value={valueToBeSearched}
@@ -125,11 +122,19 @@ function BarContainer() {
           />
         )}
       </div>
-      <div
-        className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
-        onClick={handlePlay}
-      >
-        Play
+      <div className="flex mx-4">
+        <div
+          className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer"
+          onClick={handleReset}
+        >
+          Reset
+        </div>
+        <div
+          className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
+          onClick={handlePlay}
+        >
+          Play
+        </div>
       </div>
     </div>
   );
