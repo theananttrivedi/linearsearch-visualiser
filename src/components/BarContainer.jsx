@@ -3,7 +3,7 @@ import shuffleArray from "../lib/shuffleArray";
 import Bar from "./Bar";
 import ResultContainer from "./ResultContainer";
 
-const bars_intital = [
+const bars_intital = shuffleArray([
   { num: 1, currentlyLooking: false, correct: false },
   { num: 2, currentlyLooking: false, correct: false },
   { num: 3, currentlyLooking: false, correct: false },
@@ -14,11 +14,13 @@ const bars_intital = [
   { num: 8, currentlyLooking: false, correct: false },
   { num: 9, currentlyLooking: false, correct: false },
   { num: 10, currentlyLooking: false, correct: false },
-];
+]);
 
 function BarContainer() {
   const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_intital)));
   const [playAnimation, setPlayAnimation] = useState(false);
+  const [index, setIndex] = useState(null);
+  const [valueToBeSearched, setValueToBeSearched] = useState(6);
   function handleReset() {
     setPlayAnimation(false);
     setBars(JSON.parse(JSON.stringify(bars_intital)));
@@ -28,19 +30,20 @@ function BarContainer() {
     setPlayAnimation(true);
   }
 
-  function handlePrint() {
-    console.log({ playAnimation });
-  }
-
   useEffect(() => {
     setBars(JSON.parse(JSON.stringify(bars_intital)));
+    setIndex(null);
     let i = -1;
     let founded = false;
+    let foundedindex = null;
     if (!playAnimation) return;
     if (i >= bars.length) return;
 
     const intervalID = setInterval(() => {
-      if (founded) return;
+      if (founded) {
+        setIndex(foundedindex);
+        return;
+      }
       if (i - bars.length !== -1) {
         setBars((prevBars) => {
           let previousBarTobeStoppedLookingAt;
@@ -56,10 +59,11 @@ function BarContainer() {
           }
           const barToBeLookedAt = newBars[i];
           barToBeLookedAt.currentlyLooking = true;
-          if (barToBeLookedAt.num === 5) {
+          if (barToBeLookedAt.num === valueToBeSearched) {
             barToBeLookedAt.currentlyLooking = false;
             barToBeLookedAt.correct = true;
             founded = true;
+            foundedindex = i;
           }
 
           newBars[i] = barToBeLookedAt;
@@ -88,12 +92,17 @@ function BarContainer() {
 
   return (
     <div className="flex flex-col gap-y-8">
+      {" "}
       <div
         className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer"
         onClick={handleReset}
       >
         Reset
       </div>
+      <h1 className="px-4 text-gray-500 font-bold text-xl">
+        The value to be searched is :{" "}
+        <span className="text-black">{valueToBeSearched}</span>
+      </h1>
       <div className="flex gap-x-2">
         {bars.map((bar, index) => {
           const { num, currentlyLooking, correct } = bar;
@@ -107,11 +116,14 @@ function BarContainer() {
           );
         })}
       </div>
-      <div
-        className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
-        onClick={handlePrint}
-      >
-        Print "playAnimation" value
+      <div className="h-8">
+        {playAnimation && (
+          <ResultContainer
+            value={valueToBeSearched}
+            index={index}
+            notCorrect={index === null}
+          />
+        )}
       </div>
       <div
         className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
@@ -119,12 +131,6 @@ function BarContainer() {
       >
         Play
       </div>
-
-      {/* <ResultContainer
-        value={valueToBeSearched}
-        index={index}
-        notCorrect={!visualised}
-      /> */}
     </div>
   );
 }
