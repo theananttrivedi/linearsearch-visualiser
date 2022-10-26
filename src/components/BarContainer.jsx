@@ -11,7 +11,7 @@ function BarContainer() {
   const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_initial)));
   const [playAnimation, setPlayAnimation] = useState(false);
   const [index, setIndex] = useState(null);
-  const [valueToBeSearched, setValueToBeSearched] = useState(6);
+  const [valueToBeSearched, setValueToBeSearched] = useState(15);
   function handleReset() {
     setPlayAnimation(false);
     setBars(copyBars);
@@ -36,7 +36,9 @@ function BarContainer() {
     let founded = false;
     let foundedindex = null;
     if (!playAnimation) return;
-    if (i >= bars.length) return;
+    if (i >= bars.length) {
+      return;
+    }
 
     const intervalID = setInterval(() => {
       if (founded) {
@@ -77,10 +79,21 @@ function BarContainer() {
           const newBars = JSON.parse(JSON.stringify(prevBars));
           const lastBarToBeSwitchedOff = newBars[newBars.length - 1];
           lastBarToBeSwitchedOff.currentlyLooking = false;
+
+          if (lastBarToBeSwitchedOff.num !== valueToBeSearched) {
+            lastBarToBeSwitchedOff.currentlyLooking = false;
+            lastBarToBeSwitchedOff.correct = false;
+            founded = true;
+            foundedindex = -1;
+            console.log("LAST BAR DIDN't MATCH");
+          }
+
           newBars[newBars.length - 1] = lastBarToBeSwitchedOff;
           return newBars;
         });
-        setPlayAnimation(false);
+        if (founded) {
+          setIndex(foundedindex);
+        }
       }
       i++;
     }, 500);
@@ -117,7 +130,7 @@ function BarContainer() {
           <ResultContainer
             value={valueToBeSearched}
             index={index}
-            notCorrect={index === null}
+            notCorrect={index === null || index === -1}
           />
         )}
       </div>
