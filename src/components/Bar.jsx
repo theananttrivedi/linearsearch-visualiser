@@ -1,7 +1,7 @@
 const Bar = ({ num, currentlyLooking, correct }) => {
   return (
     <div
-      className={`[width:8vw] h-36 px-1 relative flex flex-col justify-center items-center ${
+      className={`[width:8vw] h-36 px-1 lg:w-20 lg:h-40 relative flex flex-col justify-center items-center ${
         currentlyLooking
           ? "bg-white border-2 border-blue-600"
           : correct

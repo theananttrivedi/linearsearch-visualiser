@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import bars_initial from "../data/bars_initial";
 import shuffleArray from "../lib/shuffleArray";
 import Bar from "./Bar";
@@ -8,17 +8,34 @@ function BarContainer() {
   const [copyBars, setcopyBars] = useState(
     JSON.parse(JSON.stringify(bars_initial))
   );
+  const [inputVisible, setInputVisible] = useState(false);
   const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_initial)));
   const [playAnimation, setPlayAnimation] = useState(false);
   const [index, setIndex] = useState(null);
-  const [valueToBeSearched, setValueToBeSearched] = useState(15);
+  const [valueToBeSearched, setValueToBeSearched] = useState(7);
+  const inputRef = useRef();
+
   function handleReset() {
     setPlayAnimation(false);
     setBars(copyBars);
   }
 
+  function handleMouseEnter() {
+    setInputVisible(true);
+  }
+
+  function handleMouseLeave() {
+    setInputVisible(false);
+    console.log({ valueToBeSearched });
+    verifyAndSetValue(valueToBeSearched);
+  }
+
   async function handlePlay() {
     setPlayAnimation(true);
+  }
+
+  function handleInputValue(e) {
+    setValueToBeSearched(e.target.value);
   }
 
   function handleShuffle() {
@@ -27,6 +44,17 @@ function BarContainer() {
     setcopyBars(array);
     setPlayAnimation(false);
     setBars(array);
+  }
+
+  function verifyAndSetValue(value) {
+    if (value === "" || isNaN(value)) {
+      setValueToBeSearched(0);
+      return;
+    }
+    if (!isNaN(value)) {
+      setValueToBeSearched(parseInt(value));
+      return;
+    }
   }
 
   useEffect(() => {
@@ -50,9 +78,6 @@ function BarContainer() {
           let previousBarTobeStoppedLookingAt;
           const newBars = JSON.parse(JSON.stringify(prevBars));
 
-          //   Switching off the previous bar
-          // logic doesn't work in case of the last one
-          // the last one is switched off seperately
           if (i !== 0) {
             previousBarTobeStoppedLookingAt = newBars[i - 1];
             previousBarTobeStoppedLookingAt.currentlyLooking = false;
@@ -102,16 +127,37 @@ function BarContainer() {
     };
   }, [playAnimation]);
 
+  useEffect(() => {
+    if (inputVisible) {
+      inputRef.current.focus();
+    }
+  }, [inputVisible]);
+
   return (
     <div className="flex flex-col gap-y-8">
       <h1 className="px-4 text-black font-bold text-4xl text-center">
         Linear Search{" "}
       </h1>
+      <div
+        on
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="relative px-4 text-gray-500 font-bold text-xl flex items-center gap-x-2"
+      >
+        <h1> The value to be searched is : </h1>
+        {inputVisible ? (
+          <input
+            type={"text"}
+            className="h-8 w-10 relative text-black shadow-md px-2 outline-none caret-blue-600"
+            onChange={handleInputValue}
+            value={valueToBeSearched}
+            ref={inputRef}
+          />
+        ) : (
+          <span className="text-black h-8 py-1">{valueToBeSearched}</span>
+        )}
+      </div>
 
-      <h1 className="px-4 text-gray-500 font-bold text-xl">
-        The value to be searched is :{" "}
-        <span className="text-black">{valueToBeSearched}</span>
-      </h1>
       <div className="flex gap-x-2">
         {bars.map((bar, index) => {
           const { num, currentlyLooking, correct } = bar;
