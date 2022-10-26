@@ -1,26 +1,14 @@
 import { useEffect, useState } from "react";
+import bars_initial from "../data/bars_initial";
 import shuffleArray from "../lib/shuffleArray";
 import Bar from "./Bar";
 import ResultContainer from "./ResultContainer";
 
-const bars_intital = shuffleArray([
-  { num: 1, currentlyLooking: false, correct: false },
-  { num: 2, currentlyLooking: false, correct: false },
-  { num: 3, currentlyLooking: false, correct: false },
-  { num: 4, currentlyLooking: false, correct: false },
-  { num: 5, currentlyLooking: false, correct: false },
-  { num: 6, currentlyLooking: false, correct: false },
-  { num: 7, currentlyLooking: false, correct: false },
-  { num: 8, currentlyLooking: false, correct: false },
-  { num: 9, currentlyLooking: false, correct: false },
-  { num: 10, currentlyLooking: false, correct: false },
-]);
-
 function BarContainer() {
   const [copyBars, setcopyBars] = useState(
-    JSON.parse(JSON.stringify(bars_intital))
+    JSON.parse(JSON.stringify(bars_initial))
   );
-  const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_intital)));
+  const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_initial)));
   const [playAnimation, setPlayAnimation] = useState(false);
   const [index, setIndex] = useState(null);
   const [valueToBeSearched, setValueToBeSearched] = useState(6);
@@ -34,8 +22,10 @@ function BarContainer() {
   }
 
   function handleShuffle() {
-    const array = shuffleArray(JSON.parse(JSON.stringify(bars_intital)));
+    const array = shuffleArray(JSON.parse(JSON.stringify(bars_initial)));
+
     setcopyBars(array);
+    setPlayAnimation(false);
     setBars(array);
   }
 
