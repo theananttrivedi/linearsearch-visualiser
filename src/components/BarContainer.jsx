@@ -17,21 +17,30 @@ const bars_intital = shuffleArray([
 ]);
 
 function BarContainer() {
+  const [copyBars, setcopyBars] = useState(
+    JSON.parse(JSON.stringify(bars_intital))
+  );
   const [bars, setBars] = useState(JSON.parse(JSON.stringify(bars_intital)));
   const [playAnimation, setPlayAnimation] = useState(false);
   const [index, setIndex] = useState(null);
   const [valueToBeSearched, setValueToBeSearched] = useState(6);
   function handleReset() {
     setPlayAnimation(false);
-    setBars(JSON.parse(JSON.stringify(bars_intital)));
+    setBars(copyBars);
   }
 
   async function handlePlay() {
     setPlayAnimation(true);
   }
 
+  function handleShuffle() {
+    const array = shuffleArray(JSON.parse(JSON.stringify(bars_intital)));
+    setcopyBars(array);
+    setBars(array);
+  }
+
   useEffect(() => {
-    setBars(JSON.parse(JSON.stringify(bars_intital)));
+    setBars(copyBars);
     setIndex(null);
     let i = -1;
     let founded = false;
@@ -121,6 +130,15 @@ function BarContainer() {
             notCorrect={index === null}
           />
         )}
+      </div>
+      <div className="flex mx-4">
+        {" "}
+        <div
+          className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer"
+          onClick={handleShuffle}
+        >
+          Shuffle
+        </div>
       </div>
       <div className="flex mx-4">
         <div

@@ -8,10 +8,9 @@ const ResultContainer = ({ value, index, notCorrect }) => {
         </p>
         <ImCheckmark color="#16A34A" size={20} />
       </div>{" "}
-      {/* <p>
-        The value <span className="font-bold">{value}</span> found successfully
-        at index <span className="font-bold text-green-600">{index}</span>!
-      </p> */}
+      <p className="text-xl font-bold">
+        At Index: <span className="font-bold">{index}</span>{" "}
+      </p>
     </div>
   );
   if (notCorrect) {
