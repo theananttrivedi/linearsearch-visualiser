@@ -142,7 +142,7 @@ function BarContainer() {
         on
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative px-4 text-gray-500 font-bold text-xl flex items-center gap-x-2"
+        className="relative  text-gray-500 font-bold text-xl flex items-center gap-x-2"
       >
         <h1> The value to be searched is : </h1>
         {inputVisible ? (
@@ -180,24 +180,24 @@ function BarContainer() {
           />
         )}
       </div>
-      <div className="flex mx-4">
+      <div className="flex ">
         {" "}
         <div
-          className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer"
+          className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer hover:border-yellow-600"
           onClick={handleShuffle}
         >
           Shuffle
         </div>
       </div>
-      <div className="flex mx-4">
+      <div className="flex ">
         <div
-          className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer"
+          className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer hover:bg-yellow-600"
           onClick={handleReset}
         >
           Reset
         </div>
         <div
-          className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer"
+          className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer hover:bg-blue-700"
           onClick={handlePlay}
         >
           Play
