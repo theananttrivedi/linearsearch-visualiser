@@ -31,7 +31,9 @@ function BarContainer() {
   }
 
   async function handlePlay() {
-    setPlayAnimation(true);
+    if (!playAnimation) {
+      setPlayAnimation(true);
+    }
   }
 
   function handleInputValue(e) {
@@ -182,26 +184,26 @@ function BarContainer() {
       </div>
       <div className="flex ">
         {" "}
-        <div
+        <button
           className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer hover:border-yellow-600"
           onClick={handleShuffle}
         >
           Shuffle
-        </div>
+        </button>
       </div>
       <div className="flex ">
-        <div
+        <button
           className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer hover:bg-yellow-600"
           onClick={handleReset}
         >
           Reset
-        </div>
-        <div
+        </button>
+        <button
           className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer hover:bg-blue-700"
           onClick={handlePlay}
         >
           Play
-        </div>
+        </button>
       </div>
     </div>
   );
