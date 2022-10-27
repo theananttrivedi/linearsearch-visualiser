@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import bars_initial from "../data/bars_initial";
 import shuffleArray from "../lib/shuffleArray";
 import Bar from "./Bar";
@@ -136,10 +137,20 @@ function BarContainer() {
   }, [inputVisible]);
 
   return (
-    <div className="flex flex-col gap-y-8">
-      <h1 className="px-4 text-black font-bold text-4xl text-center">
-        Linear Search{" "}
-      </h1>
+    <div className="flex flex-col gap-y-8 w-full">
+      <div className="relative mx-auto w-full flex justify-center items-center">
+        {" "}
+        <h1 className="px-4 text-black font-bold text-4xl text-center">
+          Linear Search{" "}
+        </h1>
+        <Link
+          to={"/learn"}
+          className="absolute right-1 cursor-pointer font-extrabold text-blue-500 underline hover:text-blue-600"
+        >
+          Learn
+        </Link>
+      </div>
+
       <div
         on
         onMouseEnter={handleMouseEnter}
