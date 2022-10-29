@@ -137,7 +137,7 @@ function BarContainer() {
   }, [inputVisible]);
 
   return (
-    <div className="flex flex-col gap-y-8 w-full">
+    <div className="flex flex-col gap-y-8 w-full items-center">
       <div className="relative mx-auto w-full flex justify-center items-center">
         {" "}
         <h1 className="px-4 text-black font-bold text-4xl text-center">
@@ -150,72 +150,73 @@ function BarContainer() {
           Learn
         </Link>
       </div>
-
-      <div
-        on
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative  text-gray-500 font-bold text-xl flex items-center gap-x-2"
-      >
-        <h1> The value to be searched is : </h1>
-        {inputVisible ? (
-          <input
-            type={"text"}
-            className="h-8 w-10 relative text-black shadow-md px-2 outline-none caret-blue-600"
-            onChange={handleInputValue}
-            value={valueToBeSearched}
-            ref={inputRef}
-          />
-        ) : (
-          <span className="text-black h-8 py-1">{valueToBeSearched}</span>
-        )}
-      </div>
-
-      <div className="flex gap-x-2">
-        {bars.map((bar, index) => {
-          const { num, currentlyLooking, correct } = bar;
-          return (
-            <Bar
-              num={num}
-              key={index}
-              currentlyLooking={currentlyLooking}
-              correct={correct}
+      <main className="flex flex-col items-center gap-y-8 w-4/5">
+        <div
+          on
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="relative  text-gray-500 font-bold text-xl flex items-center gap-x-2"
+        >
+          <h1> The value to be searched is : </h1>
+          {inputVisible ? (
+            <input
+              type={"text"}
+              className="h-8 w-10 relative text-black shadow-md px-2 outline-none caret-blue-600"
+              onChange={handleInputValue}
+              value={valueToBeSearched}
+              ref={inputRef}
             />
-          );
-        })}
-      </div>
-      <div className="h-20">
-        {playAnimation && (
-          <ResultContainer
-            value={valueToBeSearched}
-            index={index}
-            notCorrect={index === null || index === -1}
-          />
-        )}
-      </div>
-      <div className="flex ">
-        {" "}
-        <button
-          className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer hover:border-yellow-600"
-          onClick={handleShuffle}
-        >
-          Shuffle
-        </button>
-      </div>
-      <div className="flex ">
-        <button
-          className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer hover:bg-yellow-600"
-          onClick={handleReset}
-        >
-          Reset
-        </button>
-        <button
-          className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer hover:bg-blue-700"
-          onClick={handlePlay}
-        >
-          Play
-        </button>
-      </div>
+          ) : (
+            <span className="text-black h-8 py-1">{valueToBeSearched}</span>
+          )}
+        </div>
+
+        <div className="flex gap-x-2">
+          {bars.map((bar, index) => {
+            const { num, currentlyLooking, correct } = bar;
+            return (
+              <Bar
+                num={num}
+                key={index}
+                currentlyLooking={currentlyLooking}
+                correct={correct}
+              />
+            );
+          })}
+        </div>
+        <div className="h-20">
+          {playAnimation && (
+            <ResultContainer
+              value={valueToBeSearched}
+              index={index}
+              notCorrect={index === null || index === -1}
+            />
+          )}
+        </div>
+        <div className="flex w-4/5">
+          {" "}
+          <button
+            className="border-2 border-yellow-400 w-fit px-4 font-bold cursor-pointer hover:border-yellow-600"
+            onClick={handleShuffle}
+          >
+            Shuffle
+          </button>
+        </div>
+        <div className="flex w-4/5">
+          <button
+            className="bg-yellow-400 w-fit px-4 font-bold cursor-pointer hover:bg-yellow-600"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+          <button
+            className="bg-blue-600 ml-auto text-white w-fit px-4 font-bold cursor-pointer hover:bg-blue-700"
+            onClick={handlePlay}
+          >
+            Play
+          </button>
+        </div>
+      </main>
     </div>
   );
 }
